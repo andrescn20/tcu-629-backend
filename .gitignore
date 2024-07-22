@@ -1,0 +1,55 @@
+# Ignore build outputs
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore logs
+*.log
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore Rider settings
+.idea/
+
+# Ignore other IDE specific settings
+*.vcxproj
+*.pidb
+*.sdf
+*.pyc
+
+# Ignore dependency caches
+packages/
+# Ignore NuGet
+*.nupkg
+*.snupkg
+.nuget/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignore configuration files
+appsettings.Development.json
+
+# Ignore JetBrains Rider generated files
+.idea/
+.idea_modules/
+*.sln.iml
+
+# Ignore the JetBrains Rider Solution specific files
+*.sln.ide/
+.sln.ide/
+*.sln.iml
+.sln.iml/
+
+# Ignore the local history folder
+.history/
+
+# Ignore the Publish folder
+Publish/
