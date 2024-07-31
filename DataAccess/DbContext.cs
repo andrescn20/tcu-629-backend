@@ -14,13 +14,10 @@ namespace DataAccess
         {
             modelBuilder.Entity<SensorData>(entity =>
             {
-                entity.HasKey(e => e.SensorId);
+                entity.HasKey(e => e.Id);
 
                 // Specify the precision and scale for decimal properties
                 entity.Property(e => e.Temperature)
-                      .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.Humidity)
                       .HasColumnType("decimal(5, 2)");
             });
         }

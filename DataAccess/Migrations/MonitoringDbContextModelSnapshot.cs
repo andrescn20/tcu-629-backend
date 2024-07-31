@@ -24,22 +24,18 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Models.SensorData", b =>
                 {
-                    b.Property<int>("SensorId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SensorId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BoardId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CalentadorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Humidity")
-                        .HasColumnType("decimal(5, 2)");
+                    b.Property<int>("SensorId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Temperature")
                         .HasColumnType("decimal(5, 2)");
@@ -47,7 +43,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("SensorId");
+                    b.HasKey("Id");
 
                     b.ToTable("SensorData");
                 });

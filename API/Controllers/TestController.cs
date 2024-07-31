@@ -4,7 +4,7 @@ using DataAccess;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/")]
     public class TestController : ControllerBase
     {
 

@@ -15,17 +15,16 @@ namespace DataAccess.Migrations
                 name: "SensorData",
                 columns: table => new
                 {
-                    SensorId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    SensorId = table.Column<int>(type: "int", nullable: false),
                     BoardId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CalentadorId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Temperature = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Humidity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Temperature = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SensorData", x => x.SensorId);
+                    table.PrimaryKey("PK_SensorData", x => x.Id);
                 });
         }
 
