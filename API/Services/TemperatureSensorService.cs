@@ -26,7 +26,7 @@ namespace API.Services
 
         public async Task<SensorData> GetSensorDataByIdAsync(int id)
         {
-            return await _context.SensorData.FindAsync(id);
+            throw new NotImplementedException();
         }
     }
 

@@ -21,7 +21,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostSensorData(SensorData sensorData)
+        public async Task<ActionResult<SensorData>> PostSensorData(SensorData sensorData)
         {
             if (sensorData == null)
             {
@@ -29,7 +29,8 @@ namespace API.Controllers
             }
 
             await _sensorService.AddSensorDataAsync(sensorData);
-            return CreatedAtAction(nameof(GetSensorData), new { id = sensorData.SensorId }, sensorData);
+            return sensorData;
+            //return CreatedAtAction(nameof(GetSensorData), new { id = sensorData.Id }, sensorData);
         }
 
         [HttpGet("{id}")]

@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 var connectionString = builder.Environment.IsDevelopment()
-    ? builder.Configuration.GetConnectionString("AzureConnection")
+    ? builder.Configuration.GetConnectionString("LocalConnection")
     : builder.Configuration.GetConnectionString("AzureConnection");
 
 builder.Services.AddDbContext<MonitoringDbContext>(options =>
