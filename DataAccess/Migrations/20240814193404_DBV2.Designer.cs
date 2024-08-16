@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(MonitoringDbContext))]
-    partial class MonitoringDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240814193404_DBV2")]
+    partial class DBV2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,35 +66,16 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DeviceTypeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("DeviceId");
-
-                    b.HasIndex("DeviceTypeId");
-
-                    b.ToTable("Devices");
-                });
-
-            modelBuilder.Entity("DataAccess.Models.DeviceType", b =>
-                {
-                    b.Property<int>("DeviceTypeId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeviceTypeId"));
+                    b.HasKey("DeviceId");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DeviceTypeId");
-
-                    b.ToTable("DeviceTypes");
+                    b.ToTable("Devices");
                 });
 
             modelBuilder.Entity("DataAccess.Models.DispenserData", b =>
@@ -222,17 +206,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Device");
                 });
 
-            modelBuilder.Entity("DataAccess.Models.Device", b =>
-                {
-                    b.HasOne("DataAccess.Models.DeviceType", "DeviceType")
-                        .WithMany("Devices")
-                        .HasForeignKey("DeviceTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DeviceType");
-                });
-
             modelBuilder.Entity("DataAccess.Models.DispenserData", b =>
                 {
                     b.HasOne("DataAccess.Models.Sensor", "Sensor")
@@ -263,7 +236,7 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccess.Models.SensorType", "SensorType")
+                    b.HasOne("DataAccess.Models.SensorType", "SensorTypes")
                         .WithMany("Sensors")
                         .HasForeignKey("SensorTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -271,7 +244,7 @@ namespace DataAccess.Migrations
 
                     b.Navigation("Board");
 
-                    b.Navigation("SensorType");
+                    b.Navigation("SensorTypes");
                 });
 
             modelBuilder.Entity("DataAccess.Models.TemperatureData", b =>
@@ -293,11 +266,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DataAccess.Models.Device", b =>
                 {
                     b.Navigation("Boards");
-                });
-
-            modelBuilder.Entity("DataAccess.Models.DeviceType", b =>
-                {
-                    b.Navigation("Devices");
                 });
 
             modelBuilder.Entity("DataAccess.Models.Sensor", b =>

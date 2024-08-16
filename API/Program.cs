@@ -15,6 +15,7 @@ builder.Services.AddDbContext<MonitoringDbContext>(options =>
 options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<ITemperatureSensorService, TemperatureSensorService>();
+builder.Services.AddScoped<IDeviceService, DeviceService>();
 
 
 builder.Services.AddControllers();
@@ -23,6 +24,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// Seed the database if in Development environment
+if (app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<MonitoringDbContext>();
+        DbInitializer.Seed(context);
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

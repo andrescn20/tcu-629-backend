@@ -13,18 +13,18 @@ namespace API.Services
             _context = context;
         }
 
-        public async Task AddSensorDataAsync(SensorData sensorData)
+        public async Task AddSensorDataAsync(TemperatureData sensorData)
         {
             if (sensorData == null)
             {
                 throw new ArgumentNullException(nameof(sensorData));
             }
 
-            _context.SensorData.Add(sensorData);
+            _context.TemperatureData.Add(sensorData);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<SensorData> GetSensorDataByIdAsync(int id)
+        public async Task<TemperatureData> GetSensorDataByIdAsync(int id)
         {
             throw new NotImplementedException();
         }

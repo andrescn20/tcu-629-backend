@@ -15,13 +15,13 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Temperature(SensorData data)
+        public IActionResult Temperature(TemperatureData data)
         {
             return Ok(data);
         }
 
         [HttpPost]
-        public async Task<ActionResult<SensorData>> PostSensorData(SensorData sensorData)
+        public async Task<ActionResult<TemperatureData>> PostSensorData(TemperatureData sensorData)
         {
             if (sensorData == null)
             {
@@ -44,5 +44,10 @@ namespace API.Controllers
             return Ok(sensorData);
         }
 
+        [HttpGet]
+        public string TestSensorsController()
+        {
+            return "Sensors Controller is Working";
+        }
     }
 }
