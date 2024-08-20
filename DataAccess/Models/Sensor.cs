@@ -7,7 +7,7 @@ namespace DataAccess.Models
         [Key]
         public int SensorId { get; set; }
         public string SensorName { get; set;  }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public int BoardId { get; set; }
         public int SensorTypeId { get; set; }
 

@@ -1,15 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using DataAccess.Models;
 using API.Interfaces;
+using Microsoft.AspNetCore.Cors;
 
 namespace API.Controllers
 {
+    [EnableCors("TCU_Cors")]
     [ApiController]
     [Route("/[controller]/[action]")]
-    public class SensorsController : ControllerBase
+    public class SensorsDataController : ControllerBase
     {
         private readonly ITemperatureSensorService _sensorService;
-        public SensorsController(ITemperatureSensorService sensorDataService)
+        public SensorsDataController(ITemperatureSensorService sensorDataService)
         {
             _sensorService = sensorDataService;
         }
