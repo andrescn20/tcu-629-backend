@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using DataAccess.Models;
 using API.Interfaces;
 using Microsoft.AspNetCore.Cors;
+using DTO;
 
 namespace API.Controllers
 {
@@ -10,46 +11,27 @@ namespace API.Controllers
     [Route("/[controller]/[action]")]
     public class SensorsDataController : ControllerBase
     {
-        private readonly ITemperatureSensorService _sensorService;
-        public SensorsDataController(ITemperatureSensorService sensorDataService)
+        private readonly ICollectedDataService _collectedDataService;
+        public SensorsDataController(ICollectedDataService collectedDataService)
         {
-            _sensorService = sensorDataService;
+            _collectedDataService = collectedDataService;
         }
 
         [HttpPost]
-        public IActionResult Temperature(TemperatureData data)
+        public async Task<IActionResult> Temperature(TemperatureDataDto sensorData)
         {
-            return Ok(data);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<TemperatureData>> PostSensorData(TemperatureData sensorData)
-        {
-            if (sensorData == null)
+            if(sensorData == null)
             {
-                return BadRequest("SensorData is null.");
+                return BadRequest("Sensor Data is null.");
             }
-
-            await _sensorService.AddSensorDataAsync(sensorData);
-            return sensorData;
-            //return CreatedAtAction(nameof(GetSensorData), new { id = sensorData.Id }, sensorData);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetSensorData(int id)
-        {
-            var sensorData = await _sensorService.GetSensorDataByIdAsync(id);
-            if (sensorData == null)
-            {
-                return NotFound();
-            }
+            await _collectedDataService.AddTemperatureDataAsync(sensorData);
             return Ok(sensorData);
         }
 
         [HttpGet]
-        public string TestSensorsController()
+        public string TestSensorsDataController()
         {
-            return "Sensors Controller is Working";
+            return "Sensors Data Controller is Working";
         }
     }
 }

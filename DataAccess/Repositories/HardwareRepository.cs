@@ -109,5 +109,57 @@ namespace DataAccess.Repositories
             _context.Sensors.AddRange(sensors);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<int> GetSensorIdByAddressAsync(string sensorAddress)
+        {
+            var sensor = await _context.Sensors
+            .Where(s => s.SensorAddress == sensorAddress)
+            .Select(s => s.SensorId)
+            .FirstOrDefaultAsync();
+
+            return sensor;
+        }
+
+        public async Task<List<SensorDto>> GetAllSensors()
+        {
+            var sensors = await _context.Sensors
+            .Include(s => s.SensorType)
+            .Select(s => new SensorDto
+            {
+                SensorId = s.SensorId,
+                Description = s.Description,
+                IsAvailable = s.IsAvailable,
+                SensorName = s.SensorName,
+                SensorTypeId = s.SensorTypeId,
+                SensorType = s.SensorType.Type,
+            }).ToListAsync();
+
+            return sensors;
+        }
+
+        public async Task<List<BoardDto>> GetAllBoards()
+        {
+            var boards = await _context.Boards
+            .Select(b => new BoardDto
+            {
+                BoardId = b.BoardId,
+                Description = b.Description,
+                IsInstalled = b.IsInstalled,
+                Microcontroller = b.BoardSerial,
+            }).ToListAsync();
+
+
+            return boards;
+        }
+
+        public async Task<int> GetBoardIdBySerialAsync(string boardSerial)
+        {
+            var board = await _context.Boards
+            .Where(b => b.BoardSerial == boardSerial)
+            .Select(b => b.BoardId)
+            .FirstOrDefaultAsync();
+
+            return board;
+        }
     }
 }

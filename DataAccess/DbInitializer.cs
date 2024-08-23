@@ -51,18 +51,25 @@ public static class DbInitializer
                     DeviceId = 3,  // Ensure this matches an existing DeviceId
                     Microcontroller = "ESP32",
                     Description = "Main board for temperature monitoring",
+                    BoardSerial = "Esp32001",
+                    IsInstalled = false,
                 },
                 new Board
                 {
                     DeviceId = 4,  // Ensure this matches an existing DeviceId
                     Microcontroller = "Arduino Nano",
                     Description = "Backup board for humidity sensors",
+                    BoardSerial = "Esp32002",
+                    IsInstalled = true,
+
                 },
                 new Board
                 {
                     DeviceId = 4,  // Ensure this matches an existing DeviceId
                     Microcontroller = "Raspberry Pi Pico",
                     Description = "Experimental board for IoT projects",
+                    BoardSerial = "Esp32003",
+                    IsInstalled = true,
                 }
             );
             context.SaveChanges();
@@ -95,37 +102,51 @@ public static class DbInitializer
                 {
                     SensorName = "Living Room Temperature Sensor",
                     Description = "Monitors the temperature in the living room",
-                    BoardId = 8,  // Linked to an existing Board with BoardId 1
-                    SensorTypeId = 1  // Replace with an existing SensorTypeId
+                    BoardId = 8,  
+                    SensorTypeId = 1,
+                    SensorAddress = "28df0079971303dd",
+                    IsAvailable = true,
                 },
                 new Sensor
                 {
                     SensorName = "Greenhouse Humidity Sensor",
                     Description = "Liquid Level",
-                    BoardId = 10,  // Linked to an existing Board with BoardId 2
-                    SensorTypeId = 2  // Replace with an existing SensorTypeId
+                    BoardId = null,
+                    SensorTypeId = 2, 
+                    SensorAddress = "28df0079971303aa",
+                    IsAvailable = false,
+
                 },
                 new Sensor
                 {
                     SensorName = "Kitchen Temperature Sensor",
                     Description = "Monitors the temperature in the kitchen",
-                    BoardId = 8,  // Linked to an existing Board with BoardId 1
-                    SensorTypeId = 1  // Replace with an existing SensorTypeId
+                    BoardId = 8, 
+                    SensorTypeId = 1,
+                    SensorAddress = "28df0079971303bb",
+                    IsAvailable = true,
+
                 },
                 new Sensor
                 {
  
                     SensorName = "Garage Temperature Sensor",
                     Description = "Monitors the temperature in the garage",
-                    BoardId = 9,  // Linked to an existing Board with BoardId 3
-                    SensorTypeId = 1  // Replace with an existing SensorTypeId
+                    BoardId = null, 
+                    SensorTypeId = 1,
+                    SensorAddress = "28df0079971303cc",
+                    IsAvailable = false,
+
                 },
                 new Sensor
                 {
                     SensorName = "Office Temperature Sensor",
                     Description = "Ultrasonic",
-                    BoardId = 10,  // Linked to an existing Board with BoardId 3
-                    SensorTypeId = 3  // Replace with an existing SensorTypeId
+                    BoardId = null,
+                    SensorTypeId = 3 ,
+                    SensorAddress = "28df0079971303ee",
+                    IsAvailable = false,
+
                 }
             );
 
@@ -141,9 +162,9 @@ public static class DbInitializer
             {
                 temperatureDataList.Add(new TemperatureData
                 {
-                    Temperature = Math.Round((decimal)(random.NextDouble() * 40), 2), // Random temperature between 0 and 40°C
-                    Timestamp = DateTime.Now.AddMinutes(-i * 5), // Spacing out timestamps every 5 minutes
-                    SensorId = random.Next(10, 14) // Assuming you have SensorId 1 and 2 seeded already
+                    Temperature = Math.Round((decimal)(random.NextDouble() * 40), 2), 
+                    Timestamp = DateTime.Now.AddMinutes(-i * 5), 
+                    SensorId = random.Next(41, 44) 
                 });
             }
 
@@ -159,9 +180,9 @@ public static class DbInitializer
             for (int i = 1; i <= 15; i++)
             {
                 dispenserLevelDataList.Add(new DispenserLevelData
-                {                    SensorId = random.Next(10, 14), // Assuming SensorId values range from 1 to 5
-                    LiquidLevel = random.Next(0, 2) == 1, // Random boolean value
-                    Timestamp = DateTime.Now.AddMinutes(-i * 10) // Spacing out timestamps every 10 minutes
+                {                    SensorId = random.Next(41, 44), 
+                    LiquidLevel = random.Next(0, 2) == 1, 
+                    Timestamp = DateTime.Now.AddMinutes(-i * 10) 
                 });
             }
 
@@ -178,8 +199,8 @@ public static class DbInitializer
             {
                 dispenserDataList.Add(new DispenserData
                 {
-                    SensorId = 14, // Assuming SensorId values range from 1 to 5
-                    Timestamp = DateTime.Now.AddMinutes(-i * 5) // Spacing out timestamps every 5 minutes
+                    SensorId = 41, 
+                    Timestamp = DateTime.Now.AddMinutes(-i * 5) 
                 });
             }
 

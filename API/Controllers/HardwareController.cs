@@ -30,6 +30,18 @@ namespace API.Controllers
             return _hardwareService.GetSensorTypes();
         }
 
+        [HttpGet]
+        public Task<List<SensorDto>> GetAllSensors()
+        {
+            return _hardwareService.GetAllSensors();
+        }
+
+        [HttpGet]
+        public Task<List<BoardDto>> GetAllBoards()
+        {
+            return _hardwareService.GetAllBoards();
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateNewDevice(HardwareDto device) {
             try

@@ -6,10 +6,12 @@ namespace DataAccess.Models
     {
         [Key]
         public int SensorId { get; set; }
-        public string SensorName { get; set;  }
+        public string SensorName { get; set; }
         public string? Description { get; set; }
-        public int BoardId { get; set; }
+        public int? BoardId { get; set; }
         public int SensorTypeId { get; set; }
+        public string SensorAddress { get; set; }
+        public bool IsAvailable { get; set;  }
 
         //Navigation Properties
         public SensorType SensorType { get; set; }

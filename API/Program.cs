@@ -16,9 +16,17 @@ var connectionString = builder.Environment.IsDevelopment()
 builder.Services.AddDbContext<MonitoringDbContext>(options =>
 options.UseSqlServer(connectionString));
 
-builder.Services.AddScoped<ITemperatureSensorService, TemperatureSensorService>();
-builder.Services.AddScoped<IHardwareRepository, HardwareRepository>();
+builder.Services.AddScoped<IBoardService, BoardService>();
+builder.Services.AddScoped<ICollectedDataService, CollectedDataService>();
+builder.Services.AddScoped<IDeviceService, DeviceService>();
 builder.Services.AddScoped<IHardwareService, HardwareService>();
+builder.Services.AddScoped<ISensorService, SensorService>();
+
+builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+builder.Services.AddScoped<ICollectedDataRepository, CollectedDataRepository>();
+builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+builder.Services.AddScoped<IHardwareRepository, HardwareRepository>();
+builder.Services.AddScoped<ISensorRepository, SensorRepository>();
 
 
 builder.Services.AddControllers();

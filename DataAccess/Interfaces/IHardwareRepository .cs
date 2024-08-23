@@ -1,12 +1,5 @@
 ﻿using DTO;
 using DataAccess.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-
 namespace DataAccess.Interfaces
 {
     public interface IHardwareRepository
@@ -20,5 +13,9 @@ namespace DataAccess.Interfaces
         Task AddSensorsAsync(List<Sensor> sensors);
         Task DeleteSensorTypeById(int sensorTypeId);
         Task DeleteDeviceTypeById(int deviceTypeId);
+        Task<int> GetSensorIdByAddressAsync(string sensorAddress);
+        Task<List<SensorDto>> GetAllSensors();
+        Task<List<BoardDto>> GetAllBoards();
+
     }
 }

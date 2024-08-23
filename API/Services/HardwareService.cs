@@ -16,6 +16,15 @@ namespace API.Services
             _hardwareRepository = hardwareRepository;
         }
 
+        public async Task<List<SensorDto>> GetAllSensors()
+        {
+            return await _hardwareRepository.GetAllSensors();
+        }
+        public async Task<List<BoardDto>> GetAllBoards()
+        {
+            return await _hardwareRepository.GetAllBoards();
+
+        }
         public async Task<int> AddDeviceType(DeviceTypeDto deviceType)
         {
             var newDeviceType = new DeviceType
