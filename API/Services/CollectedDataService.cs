@@ -9,15 +9,15 @@ namespace API.Services
     public class CollectedDataService : ICollectedDataService
     {
         private readonly ICollectedDataRepository _collectedDataRepository;
-        private readonly IHardwareRepository _hardwareRepository;
+        private readonly ISensorRepository _sensorRepository;
 
         public CollectedDataService(ICollectedDataRepository collectedDataRepository,
-            IHardwareRepository hardwareRepository)
+            ISensorRepository sensorRepository)
         {
             _collectedDataRepository = collectedDataRepository;
-            _hardwareRepository = hardwareRepository;
+            _sensorRepository = sensorRepository;
         }
-        public async Task AddTemperatureDataAsync(TemperatureDataDto sensorData)
+        public async Task<TemperatureDataDto> AddTemperatureDataAsync(TemperatureDataDto sensorData)
         {
             try
             {
@@ -27,20 +27,31 @@ namespace API.Services
                 }
 
                 {
-                    var sensorId = await _hardwareRepository.GetSensorIdByAddressAsync(sensorData.SensorAddress);
-                    if (sensorId == null)
+                    var sensor = await _sensorRepository.GetSensorByAddressAsync(sensorData.SensorAddress);
+                    if (sensor == null)
                     {
-                        throw new Exception("Sensor not found or is not ");
+                        throw new Exception("Sensor not found");
                     }
 
                     var temperatureSensorDto = new TemperatureData
                     {
-                        SensorId = sensorId,
+                        SensorId = sensor.SensorId,
                         Temperature = sensorData.Temperature,
                         Timestamp = sensorData.Timestamp,
                     };
 
-                    await _collectedDataRepository.SaveTemperatureSensorDataAsync(temperatureSensorDto);
+                    var savedRecord = await _collectedDataRepository.SaveTemperatureSensorDataAsync(temperatureSensorDto);
+
+                    return new TemperatureDataDto
+                    {
+                        Id = savedRecord.Id,
+                        SensorId = savedRecord.SensorId,
+                        Temperature = savedRecord.Temperature,
+                        Timestamp = savedRecord.Timestamp,
+                        SensorAddress = sensor.SensorAddress,
+                        BoardId = sensor.BoardId,
+                    };
+                    
                 }
             }
             catch

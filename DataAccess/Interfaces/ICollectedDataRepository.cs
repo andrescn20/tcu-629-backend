@@ -4,7 +4,7 @@ namespace DataAccess.Interfaces
 {
     public interface ICollectedDataRepository
     {
-        Task SaveTemperatureSensorDataAsync(TemperatureData temperatureData);
+        Task<TemperatureData> SaveTemperatureSensorDataAsync(TemperatureData temperatureData);
 
     }
 }

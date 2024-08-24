@@ -20,12 +20,20 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> Temperature(TemperatureDataDto sensorData)
         {
-            if(sensorData == null)
+            if (sensorData == null)
             {
                 return BadRequest("Sensor Data is null.");
             }
-            await _collectedDataService.AddTemperatureDataAsync(sensorData);
-            return Ok(sensorData);
+
+            try
+            {
+                var response = await _collectedDataService.AddTemperatureDataAsync(sensorData);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while processing your request: {ex.Message}");
+            }
         }
 
         [HttpGet]

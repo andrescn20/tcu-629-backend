@@ -5,7 +5,7 @@ namespace API.Interfaces
 {
     public interface ICollectedDataService
     {
-        Task AddTemperatureDataAsync(TemperatureDataDto sensorData);
+        Task<TemperatureDataDto> AddTemperatureDataAsync(TemperatureDataDto sensorData);
     }
 }
 

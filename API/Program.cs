@@ -19,13 +19,11 @@ options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IBoardService, BoardService>();
 builder.Services.AddScoped<ICollectedDataService, CollectedDataService>();
 builder.Services.AddScoped<IDeviceService, DeviceService>();
-builder.Services.AddScoped<IHardwareService, HardwareService>();
 builder.Services.AddScoped<ISensorService, SensorService>();
 
 builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 builder.Services.AddScoped<ICollectedDataRepository, CollectedDataRepository>();
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
-builder.Services.AddScoped<IHardwareRepository, HardwareRepository>();
 builder.Services.AddScoped<ISensorRepository, SensorRepository>();
 
 
@@ -50,7 +48,7 @@ if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<MonitoringDbContext>();
-    DbInitializer.Seed(context);
+    //DbInitializer.Seed(context);
 }
 
 // Configure the HTTP request pipeline.

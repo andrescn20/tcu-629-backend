@@ -5,5 +5,9 @@ namespace API.Interfaces
     {
         Task<List<DeviceDto>> GetAllDevices();
         Task<int> DeleteDeviceById(int deviceId);
+        Task<DeviceDto> CreateNewDevice(NewDeviceDto device);
+        Task<List<DeviceTypeDto>> GetDeviceTypes(bool withDevices);
+        Task<int> AddDeviceType(DeviceTypeDto deviceType);
+        Task DeleteDeviceType(int typeId);
     }
 }

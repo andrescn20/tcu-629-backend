@@ -26,14 +26,14 @@ public static class DbInitializer
             context.Devices.AddRange(
                 new Device
                 {
-                    DeviceTypeId = 1,  // Example: 1 could represent a specific type of device
+                    DeviceTypeId = 1,  
                     Description = "Temperature monitoring device for living room",
                     Location = "Living Room",
                     Added_at = DateTime.Now
                 },
                 new Device
                 {
-                    DeviceTypeId = 2,  // Example: 2 could represent a different type of device
+                    DeviceTypeId = 2,  
                     Description = "Humidity monitoring device for greenhouse",
                     Location = "Greenhouse",
                     Added_at = DateTime.Now
