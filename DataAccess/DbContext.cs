@@ -31,7 +31,8 @@ namespace DataAccess
             modelBuilder.Entity<Device>()
                 .HasOne(d => d.DeviceType)
                 .WithMany(dt => dt.Devices)
-                .HasForeignKey(d => d.DeviceTypeId);
+                .HasForeignKey(d => d.DeviceTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<TemperatureData>()
                 .HasOne(td => td.Sensor)
