@@ -17,6 +17,8 @@ namespace DataAccess.Repositories
         {
             var devices = _context.Devices
                 .Include(d => d.DeviceType)
+                .Include(d => d.Boards)
+                .ThenInclude(b => b.Sensors)
                 .Select(d => new DeviceDto
                 {
                     DeviceId = d.DeviceId,
@@ -25,8 +27,65 @@ namespace DataAccess.Repositories
                     Location = d.Location,
                     Added_at = d.Added_at,
                     DeviceType = d.DeviceType.Type,
+                    Boards = d.Boards.Select(b => new BoardDto
+                    {
+                        BoardId = b.BoardId,
+                        BoardSerial = b.BoardSerial,
+                        Description = b.Description,
+                        IsInstalled = b.IsInstalled,
+                        Microcontroller = b.Microcontroller,
+                        Sensors = b.Sensors.Select(s => new SensorDto
+                        {
+                            Description = s.Description,
+                            IsAvailable = s.IsAvailable,
+                            SensorAddress = s.SensorAddress,
+                            SensorId = s.SensorId,
+                            SensorName = s.SensorName,
+                            SensorTypeId = s.SensorTypeId,
+
+                        }).ToList()
+                    }).ToList()
                 });
             return await devices.ToListAsync();
+
+    //        var devices =
+    //from d in _context.Devices
+    //join dt in _context.DeviceTypes on d.DeviceTypeId equals dt.DeviceTypeId
+    //join b in _context.Boards on d.DeviceId equals b.DeviceId into boards
+    //from b in boards.DefaultIfEmpty()
+    //join s in _context.Sensors on b.BoardId equals s.BoardId into sensors
+    //from s in sensors.DefaultIfEmpty()
+    //select new DeviceDto
+    //{
+    //    DeviceId = d.DeviceId,
+    //    DeviceTypeId = d.DeviceTypeId,
+    //    Description = d.Description,
+    //    Location = d.Location,
+    //    Added_at = d.Added_at,
+    //    DeviceType = dt.Type,
+    //    Boards = (
+    //        from b2 in boards
+    //        select new BoardDto
+    //        {
+    //            BoardId = b2.BoardId,
+    //            BoardName = b2.Name,
+    //            Sensors = (
+    //                from s2 in sensors
+    //                where s2.BoardId == b2.BoardId
+    //                select new SensorDto
+    //                {
+    //                    SensorId = s2.SensorId,
+    //                    SensorName = s2.Name,
+    //                    SensorType = s2.Type,
+    //                    SensorValue = s2.Value
+    //                }
+    //            ).ToList()
+    //        }
+    //    ).ToList()
+    //};
+
+    //        var deviceList = devices.ToList();
+
         }
 
         public async Task<int> DeleteDeviceByIdAsync(int deviceId)
@@ -74,7 +133,7 @@ namespace DataAccess.Repositories
             _context.DeviceTypes.Remove(deviceType);
             await _context.SaveChangesAsync();
         }
-       
+
         public async Task<int> AddDeviceAsync(Device device)
         {
             _context.Devices.Add(device);
