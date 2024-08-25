@@ -53,3 +53,4 @@ appsettings.Development.json
 
 # Ignore the Publish folder
 Publish/
+API/appsettings.json
