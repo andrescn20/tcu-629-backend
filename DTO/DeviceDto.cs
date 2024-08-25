@@ -8,6 +8,7 @@
         public string Location { get; set; }
         public DateTime Added_at { get; set; }
         public string? DeviceType { get; set; }
+        public List<BoardDto> Boards { get; set; }
     }
     public class DeviceTypeDto
     
