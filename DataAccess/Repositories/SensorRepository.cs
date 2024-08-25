@@ -108,6 +108,7 @@ namespace DataAccess.Repositories
                 SensorName = s.SensorName,
                 SensorTypeId = s.SensorTypeId,
                 SensorType = s.SensorType.Type,
+                SensorAddress = s.SensorAddress,
             }).ToListAsync();
 
             return sensors;
