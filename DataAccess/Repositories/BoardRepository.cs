@@ -37,6 +37,7 @@ namespace DataAccess.Repositories
                 Description = b.Description,
                 IsInstalled = b.IsInstalled,
                 Microcontroller = b.BoardSerial,
+                BoardSerial = b.BoardSerial,
             }).ToListAsync();
 
 
