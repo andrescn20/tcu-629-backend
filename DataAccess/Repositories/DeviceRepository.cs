@@ -90,12 +90,51 @@ namespace DataAccess.Repositories
 
         public async Task<int> DeleteDeviceByIdAsync(int deviceId)
         {
-            var device = new Device { DeviceId = deviceId };
-            _context.Devices.Attach(device);
-            _context.Devices.Remove(device);
-            await _context.SaveChangesAsync();
-            return deviceId;
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var device = await _context.Devices
+                    .Include(d => d.Boards)
+                    .FirstOrDefaultAsync(d => d.DeviceId == deviceId);
+
+                if (device == null)
+                {
+                    throw new Exception("Device not found in DataBase");
+                }
+
+                var boards = device.Boards;
+
+                if (boards != null)
+                {
+                   foreach(var board in boards)
+                    {
+
+                        board.IsInstalled = false;
+
+                    foreach (var sensor in _context.Sensors.Where(s => s.BoardId == board.BoardId))
+                    {
+                        sensor.IsAvailable = true;
+                    }
+                    }
+                }
+
+                _context.Devices.Remove(device);
+
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                return deviceId;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
+
         public async Task<int> AddDeviceTypeAsync(DeviceType deviceType)
         {
             if (deviceType == null)
