@@ -7,7 +7,7 @@ namespace DataAccess.Repositories
 {
     public interface IBoardRepository
     {
-        Task DeleteBoardByIdAsync(int boardId);
+        Task<int> DeleteBoardByIdAsync(int boardId);
         Task<int> AddBoardAsync(Board board);
         Task<int> GetBoardIdBySerialAsync(string boardSerial);
         Task<List<BoardDto>> GetAllBoards();

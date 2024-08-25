@@ -14,12 +14,45 @@ namespace DataAccess.Repositories
             _context = context;
         }
 
-        public async Task DeleteBoardByIdAsync(int boardId)
+        public async Task<int> DeleteBoardByIdAsync(int boardId)
         {
-            var board = new Board { BoardId = boardId};
-            _context.Boards.Attach(board);
-            _context.Boards.Remove(board);
-            await _context.SaveChangesAsync();
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var board = await _context.Boards
+                    .Include(b => b.Sensors)
+                    .FirstOrDefaultAsync(s => s.BoardId == boardId);
+
+                if (board == null)
+                {
+                    throw new Exception("Board not found in DataBase");
+                }
+
+                var sensors = board.Sensors;
+
+                if (sensors != null)
+                {
+                    foreach (var sensor in sensors)
+                    {
+                        sensor.IsAvailable = true;
+                    }
+                }
+
+                _context.Boards.Remove(board);
+
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                return boardId;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
         public async Task<int> AddBoardAsync(Board board)
         {
