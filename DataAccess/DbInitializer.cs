@@ -164,7 +164,17 @@ public static class DbInitializer
                 {
                     Temperature = Math.Round((decimal)(random.NextDouble() * 40), 2), 
                     Timestamp = DateTime.Now.AddMinutes(-i * 5), 
-                    SensorId = random.Next(41, 44) 
+                    SensorId = 46 
+                });
+            }
+
+            for (int i = 1; i <= 76; i++)
+            {
+                temperatureDataList.Add(new TemperatureData
+                {
+                    Temperature = Math.Round((decimal)(random.NextDouble() * 40), 2),
+                    Timestamp = DateTime.Now.AddMinutes(-i * 5),
+                    SensorId = 50
                 });
             }
 
@@ -172,40 +182,40 @@ public static class DbInitializer
             context.SaveChanges();
         }
 
-        if (!context.DispenserLevelData.Any())
-        {
-            var random = new Random();
-            var dispenserLevelDataList = new List<DispenserLevelData>();
+        //if (!context.DispenserLevelData.Any())
+        //{
+        //    var random = new Random();
+        //    var dispenserLevelDataList = new List<DispenserLevelData>();
 
-            for (int i = 1; i <= 15; i++)
-            {
-                dispenserLevelDataList.Add(new DispenserLevelData
-                {                    SensorId = random.Next(41, 44), 
-                    LiquidLevel = random.Next(0, 2) == 1, 
-                    Timestamp = DateTime.Now.AddMinutes(-i * 10) 
-                });
-            }
+        //    for (int i = 1; i <= 15; i++)
+        //    {
+        //        dispenserLevelDataList.Add(new DispenserLevelData
+        //        {                    SensorId = random.Next(41, 44), 
+        //            LiquidLevel = random.Next(0, 2) == 1, 
+        //            Timestamp = DateTime.Now.AddMinutes(-i * 10) 
+        //        });
+        //    }
 
-            context.DispenserLevelData.AddRange(dispenserLevelDataList);
-            context.SaveChanges();
-        }
+        //    context.DispenserLevelData.AddRange(dispenserLevelDataList);
+        //    context.SaveChanges();
+        //}
 
-        if (!context.DispenserData.Any())
-        {
-            var random = new Random();
-            var dispenserDataList = new List<DispenserData>();
+        //if (!context.DispenserData.Any())
+        //{
+        //    var random = new Random();
+        //    var dispenserDataList = new List<DispenserData>();
 
-            for (int i = 1; i <= 50; i++)
-            {
-                dispenserDataList.Add(new DispenserData
-                {
-                    SensorId = 41, 
-                    Timestamp = DateTime.Now.AddMinutes(-i * 5) 
-                });
-            }
+        //    for (int i = 1; i <= 50; i++)
+        //    {
+        //        dispenserDataList.Add(new DispenserData
+        //        {
+        //            SensorId = 41, 
+        //            Timestamp = DateTime.Now.AddMinutes(-i * 5) 
+        //        });
+        //    }
 
-            context.DispenserData.AddRange(dispenserDataList);
-            context.SaveChanges();
-        }
+        //    context.DispenserData.AddRange(dispenserDataList);
+        //    context.SaveChanges();
+        //}
     }
 }
