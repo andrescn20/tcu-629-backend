@@ -7,7 +7,6 @@ using DTO;
 
 namespace API.Controllers
 {
-    [EnableCors("TCU_Cors")]
     [ApiController]
     [Route("/[controller]/[action]")]
     public class BoardController : ControllerBase

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Cors;
 
 namespace API.Controllers
 {
-    [EnableCors("TCU_Cors")]
     [ApiController]
     [Route("/")]
     public class MaintenanceController : ControllerBase

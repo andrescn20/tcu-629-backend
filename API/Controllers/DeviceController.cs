@@ -6,7 +6,6 @@ using API.Services;
 
 namespace API.Controllers
 {
-    [EnableCors("TCU_Cors")]
     [ApiController]
     [Route("/[controller]/[action]")]
     public class DeviceController : ControllerBase

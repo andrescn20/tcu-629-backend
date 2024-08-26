@@ -35,7 +35,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options => {
     options.AddPolicy(name: "TCU_Cors",
         policy => {
-            policy.WithOrigins("http://localhost:5173", "https://tcu-629-q49rvzp0e-andrescn20s-projects.vercel.app/");
+            policy.AllowAnyOrigin();
             policy.AllowAnyHeader(); //application/json  application/xml application/text
             policy.AllowAnyMethod(); //GET, POST, PUT, DELETE
         });
@@ -48,7 +48,7 @@ if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<MonitoringDbContext>();
-    DbInitializer.Seed(context);
+ 
 }
 
 // Configure the HTTP request pipeline.
@@ -60,10 +60,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("TCU_Cors");
+
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseCors("TCU_Cors");
 
 app.Run();
