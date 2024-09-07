@@ -11,5 +11,6 @@ namespace DTO
         public string SensorAddress { get; set; } 
         public int? SensorId { get; set; }
         public int? BoardId { get; set; }
+        public int? DeviceId { get; set; }
     }
 }
