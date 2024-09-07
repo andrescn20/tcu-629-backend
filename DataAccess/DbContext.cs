@@ -16,10 +16,13 @@ namespace DataAccess
         public DbSet<DispenserLevelData> DispenserLevelData { get; set; }
         public DbSet<SensorType> SensorTypes { get; set; }
         public DbSet<DeviceType> DeviceTypes { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<TemperatureData>(entity =>
             {
                 entity.HasKey(e => e.Id);
