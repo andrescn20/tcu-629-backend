@@ -1,10 +1,34 @@
 ﻿using DataAccess;
 using DataAccess.Models;
+using Microsoft.AspNetCore.Identity;
 
 public static class DbInitializer
 {
-    public static void Seed(MonitoringDbContext context)
+    public static void Seed(MonitoringDbContext context, UserManager<ApplicationUser> userManager)
     {
+        // Seed Identity Users
+        if (!userManager.Users.Any())
+        {
+            var users = new List<ApplicationUser>
+            {
+                new ApplicationUser
+                {
+                    UserName = "admin",
+                    Email = "admin@example.com"
+                },
+                new ApplicationUser
+                {
+                    UserName = "user",
+                    Email = "user@example.com"
+                }
+            };
+
+            foreach (var user in users)
+            {
+                userManager.CreateAsync(user, "Password123!").Wait(); // Password should be strong
+            }
+        }
+
         //if (!context.DeviceTypes.Any())
         //{
         //    context.DeviceTypes.AddRange(
@@ -129,7 +153,7 @@ public static class DbInitializer
         //        },
         //        new Sensor
         //        {
- 
+
         //            SensorName = "Garage Temperature Sensor",
         //            Description = "Monitors the temperature in the garage",
         //            BoardId = null, 
@@ -152,7 +176,7 @@ public static class DbInitializer
 
         //    context.SaveChanges();
         //}
-        
+
         if (!context.TemperatureData.Any())
         {
             var random = new Random();
@@ -162,7 +186,7 @@ public static class DbInitializer
             {
                 temperatureDataList.Add(new TemperatureData
                 {
-                    Temperature = Math.Round((decimal)(random.NextDouble() * 40), 2), 
+                    Temperature = Math.Round((decimal)(random.Next(180, 380) / 10), 2), 
                     Timestamp = DateTime.Now.AddMinutes(-i * 5), 
                     SensorId = 46 
                 });
@@ -172,7 +196,7 @@ public static class DbInitializer
             {
                 temperatureDataList.Add(new TemperatureData
                 {
-                    Temperature = Math.Round((decimal)(random.NextDouble() * 40), 2),
+                    Temperature = Math.Round((decimal)(random.Next(180,380) / 10), 2),
                     Timestamp = DateTime.Now.AddMinutes(-i * 5),
                     SensorId = 50
                 });
