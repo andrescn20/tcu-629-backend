@@ -47,45 +47,6 @@ namespace DataAccess.Repositories
                     }).ToList()
                 });
             return await devices.ToListAsync();
-
-    //        var devices =
-    //from d in _context.Devices
-    //join dt in _context.DeviceTypes on d.DeviceTypeId equals dt.DeviceTypeId
-    //join b in _context.Boards on d.DeviceId equals b.DeviceId into boards
-    //from b in boards.DefaultIfEmpty()
-    //join s in _context.Sensors on b.BoardId equals s.BoardId into sensors
-    //from s in sensors.DefaultIfEmpty()
-    //select new DeviceDto
-    //{
-    //    DeviceId = d.DeviceId,
-    //    DeviceTypeId = d.DeviceTypeId,
-    //    Description = d.Description,
-    //    Location = d.Location,
-    //    Added_at = d.Added_at,
-    //    DeviceType = dt.Type,
-    //    Boards = (
-    //        from b2 in boards
-    //        select new BoardDto
-    //        {
-    //            BoardId = b2.BoardId,
-    //            BoardName = b2.Name,
-    //            Sensors = (
-    //                from s2 in sensors
-    //                where s2.BoardId == b2.BoardId
-    //                select new SensorDto
-    //                {
-    //                    SensorId = s2.SensorId,
-    //                    SensorName = s2.Name,
-    //                    SensorType = s2.Type,
-    //                    SensorValue = s2.Value
-    //                }
-    //            ).ToList()
-    //        }
-    //    ).ToList()
-    //};
-
-    //        var deviceList = devices.ToList();
-
         }
 
         public async Task<int> DeleteDeviceByIdAsync(int deviceId)
