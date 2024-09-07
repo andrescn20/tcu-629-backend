@@ -25,5 +25,44 @@ namespace DataAccess.Repositories
             return temperatureData;
         }
 
+        public async Task<Device> GetTemperatureDataByDeviceIdAsync(int deviceId)
+        {
+            var device = await _context.Devices
+                .Include(d => d.Boards)
+                    .ThenInclude(b => b.Sensors)
+                .FirstOrDefaultAsync(d => d.DeviceId == deviceId);
+
+            var boardsTemp = new List<Board>();
+
+            foreach (var board in device.Boards)
+            {
+                var sensorsTemp = new List<Sensor>();
+                foreach (var sensor in board.Sensors)
+                {
+                    var completeSensor = await GetTemperatureDataBySensorIdAsync(sensor.SensorId);
+                    sensorsTemp.Add(completeSensor);
+                }
+                board.Sensors = sensorsTemp;
+                boardsTemp.Add(board);
+            }
+            device.Boards = boardsTemp;
+
+            return device ?? throw new Exception("Device not found");
+        }
+
+        public async Task<Sensor> GetTemperatureDataBySensorIdAsync(int sensorId)
+        {
+            var sensor = await _context.Sensors
+                .Include(s => s.TemperatureDataList)
+                .FirstOrDefaultAsync(s => s.SensorId == sensorId);
+            return sensor ?? throw new Exception("Sensor not found");
+        }
+        public async Task<List<TemperatureData>> GetAllTemperatureMeasurementsAsync()
+        {
+            return await _context.TemperatureData
+                .Include(t => t.Sensor)
+                .ToListAsync();
+        }
+
     }
 }
