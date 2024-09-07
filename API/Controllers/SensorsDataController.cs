@@ -3,9 +3,11 @@ using DataAccess.Models;
 using API.Interfaces;
 using Microsoft.AspNetCore.Cors;
 using DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
+    [Authorize]
     [EnableCors("TCU_Cors")]
     [ApiController]
     [Route("/[controller]/[action]")]
@@ -34,6 +36,37 @@ namespace API.Controllers
             {
                 return StatusCode(500, $"An error occurred while processing your request: {ex.Message}");
             }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<TemperatureDataDto>>> GetTemperatureDataByDeviceId(int deviceId = -1)
+        {
+            if(deviceId == -1 )
+            {
+                return BadRequest("Device Id is necessary");
+            }
+
+            var response = await _collectedDataService.GetTemperatureDataByDeviceId(deviceId);
+            return Ok(response);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<TemperatureDataDto>>> GetTemperatureDataBySensorId(int sensorId = -1)
+        {
+            if (sensorId == -1)
+            {
+                return BadRequest("Device Id is necessary");
+            }
+
+            var response = await _collectedDataService.GetTemperatureDataBySensorId(sensorId);
+            return Ok(response);
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult<List<TemperatureDataDto>>> GetAllTemperatureMeasurements()
+        {
+            return await _collectedDataService.GetAllTemperatureMeasurements();
         }
 
         [HttpGet]
