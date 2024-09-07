@@ -3,6 +3,8 @@ using DataAccess.Interfaces;
 using DataAccess.Models;
 using DataAccess.Repositories;
 using DTO;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 
 namespace API.Services
 {
@@ -33,6 +35,10 @@ namespace API.Services
                         throw new Exception("Sensor not found");
                     }
 
+                    if (sensorData.Temperature < 0)
+                    {
+                        throw new Exception("Incorrect Reading");
+                    }
                     var temperatureSensorDto = new TemperatureData
                     {
                         SensorId = sensor.SensorId,
@@ -51,13 +57,99 @@ namespace API.Services
                         SensorAddress = sensor.SensorAddress,
                         BoardId = sensor.BoardId,
                     };
-                    
+
                 }
             }
             catch
             {
                 throw new Exception("Error saving Data");
             }
+        }
+
+        public async Task<List<TemperatureDataDto>> GetTemperatureDataByDeviceId(int deviceId)
+        {
+            var device = await _collectedDataRepository.GetTemperatureDataByDeviceIdAsync(deviceId);
+
+            List<TemperatureDataDto> temperatures = new List<TemperatureDataDto>();
+
+            if (device != null)
+            {
+                foreach (var board in device.Boards)
+                {
+                    foreach (var sensor in board.Sensors)
+                    {
+                        foreach (var measure in sensor.TemperatureDataList)
+                        {
+                            var data = new TemperatureDataDto
+                            {
+                                Id = measure.Id,
+                                SensorId = measure.SensorId,
+                                Temperature = measure.Temperature,
+                                Timestamp = measure.Timestamp,
+                                BoardId = board.BoardId,
+                                DeviceId = device.DeviceId,
+                                SensorAddress = sensor.SensorAddress,
+                            };
+
+                            temperatures.Add(data);
+
+                        }
+                    }
+                }
+            }
+
+            return temperatures;
+
+        }
+
+        public async Task<List<TemperatureDataDto>> GetTemperatureDataBySensorId(int sensorId)
+        {
+            var sensor = await _collectedDataRepository.GetTemperatureDataBySensorIdAsync(sensorId);
+
+            List<TemperatureDataDto> temperatures = new List<TemperatureDataDto>();
+
+            if (sensor != null)
+            {
+
+                foreach (var measure in sensor.TemperatureDataList)
+                {
+                    var data = new TemperatureDataDto
+                    {
+                        Id = measure.Id,
+                        SensorId = measure.SensorId,
+                        Temperature = measure.Temperature,
+                        Timestamp = measure.Timestamp,
+                        BoardId = sensor.BoardId,
+                        SensorAddress = sensor.SensorAddress,
+                    };
+
+                    temperatures.Add(data);
+
+
+                }
+            }
+
+            return temperatures;
+
+        }
+        public async Task<List<TemperatureDataDto>> GetAllTemperatureMeasurements()
+        {
+            var measurements = await _collectedDataRepository.GetAllTemperatureMeasurementsAsync();
+            List<TemperatureDataDto> temperatures = new List<TemperatureDataDto>();
+            foreach (var measure in measurements)
+            {
+                var tempDto = new TemperatureDataDto
+                {
+                    Id = measure.Id,
+                    SensorId = measure.SensorId,
+                    Temperature = measure.Temperature,
+                    SensorAddress = measure.Sensor.SensorAddress,
+                    Timestamp = measure.Timestamp
+                };
+
+                temperatures.Add(tempDto);
+            }
+            return temperatures;
         }
     }
 
