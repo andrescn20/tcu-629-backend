@@ -4,9 +4,11 @@ using API.Interfaces;
 using Microsoft.AspNetCore.Cors;
 using API.Services;
 using DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("/[controller]/[action]")]
     public class BoardController : ControllerBase

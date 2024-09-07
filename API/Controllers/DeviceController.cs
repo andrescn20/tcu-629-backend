@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Cors;
 using API.Interfaces;
 using DTO;
 using API.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("/[controller]/[action]")]
     public class DeviceController : ControllerBase
