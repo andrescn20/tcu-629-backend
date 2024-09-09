@@ -1,9 +1,10 @@
 ﻿using DataAccess.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
 {
-    public class MonitoringDbContext : DbContext
+    public class MonitoringDbContext : IdentityDbContext<ApplicationUser>
     {
         public MonitoringDbContext(DbContextOptions<MonitoringDbContext> options) : base(options)
         {
