@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [EnableCors("TCU_Cors")]
     [ApiController]
     [Route("/[controller]/[action]")]
