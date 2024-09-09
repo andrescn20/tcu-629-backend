@@ -37,6 +37,7 @@ builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 builder.Services.AddScoped<ICollectedDataRepository, CollectedDataRepository>();
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 builder.Services.AddScoped<ISensorRepository, SensorRepository>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // Configure Identity options (if needed)
 builder.Services.Configure<IdentityOptions>(options =>
@@ -120,14 +121,19 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+using var scope = app.Services.CreateScope();
+
 // Seed the database if in Development environment
 if (app.Environment.IsDevelopment())
 {
-    using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<MonitoringDbContext>();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-    DbInitializer.Seed(context, userManager);
+    DbInitializer.SeedSensorData(context);
 }
+
+var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+await DbInitializer.SeedUsersAndRoles(userManager, roleManager);
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
