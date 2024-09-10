@@ -97,8 +97,8 @@ namespace API.Services
                     }
                 }
             }
-
-            return temperatures;
+            var sortedTemperatures = temperatures.OrderBy(t => t.Timestamp).ToList();
+            return sortedTemperatures;
 
         }
 
@@ -151,6 +151,63 @@ namespace API.Services
             }
             return temperatures;
         }
+
+        public async Task<DeviceStatsDto> GetTemperatureStatsByDevice(int deviceId)
+        {
+            var allTemperatures = await GetTemperatureDataByDeviceId(deviceId);
+
+            List<TemperatureDataDto>? temperatures = null;
+
+            var currentDate = DateTime.UtcNow;
+            var counter = 1;
+
+            while (temperatures == null || temperatures.Count == 0)
+            {
+                temperatures = allTemperatures
+                    .Where(t => t.Timestamp.AddDays(30 * counter) >= currentDate)
+                    .ToList();
+
+                counter++;  
+            }
+
+            var sortedTemperatures = temperatures.OrderBy(t => t.Temperature).ToList();
+
+            var MinTemperatureData = sortedTemperatures.FirstOrDefault();
+
+            var MaxTemperatureData = temperatures.OrderByDescending(t => t.Temperature).FirstOrDefault();
+
+            var LatestTemperatureData = temperatures.OrderByDescending(t => t.Timestamp).FirstOrDefault();
+
+            int count = sortedTemperatures.Count;
+
+            double medianTemperature;
+
+            if (count % 2 == 1)
+            {
+                medianTemperature = (double)sortedTemperatures[count / 2].Temperature;
+            }
+            else
+            {
+                medianTemperature = (double)(sortedTemperatures[(count / 2) - 1].Temperature + sortedTemperatures[count / 2].Temperature) / 2.0;
+            }
+
+
+            var stats = new DeviceStatsDto
+            {
+                DeviceId = deviceId,
+                MaxTemperature = (double)MaxTemperatureData.Temperature,
+                MaxTemperatureTime = MaxTemperatureData.Timestamp,
+                MedianTemperature = medianTemperature,
+                MinTemperature = (double)MinTemperatureData.Temperature,
+                MinTemperatureTime = MinTemperatureData.Timestamp,
+                LatestTemperature = (double)LatestTemperatureData.Temperature,
+                LatestTemperatureTime = LatestTemperatureData.Timestamp,
+
+            };
+
+            return stats;
+        }
+
     }
 
 }

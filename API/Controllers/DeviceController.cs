@@ -13,9 +13,14 @@ namespace API.Controllers
     public class DeviceController : ControllerBase
     {
         private readonly IDeviceService _deviceService;
-        public DeviceController(IDeviceService deviceService)
+        private readonly ICollectedDataService _dataService;
+
+        public DeviceController(
+            IDeviceService deviceService,
+            ICollectedDataService dataService)
         {
             _deviceService = deviceService;
+            _dataService = dataService;
         }
 
         [HttpGet]
@@ -87,6 +92,27 @@ namespace API.Controllers
         {
             await _deviceService.DeleteDeviceType(typeId);
             return Ok($"Device type with ID {typeId} deleted successfully.");
+        }
+        [HttpGet]
+        public async Task<ActionResult<DeviceStatsDto>> GetDeviceStats(int deviceId)
+        {
+
+            if (deviceId == null)
+            {
+                return BadRequest("Device Id missing");
+            }
+            try
+            {
+
+
+            var stats = await _dataService.GetTemperatureStatsByDevice(deviceId);
+                return Ok(stats);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while processing your request: {ex.Message}");
+            }
+
         }
     }
 }

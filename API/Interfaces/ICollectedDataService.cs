@@ -9,6 +9,7 @@ namespace API.Interfaces
         Task<List<TemperatureDataDto>> GetTemperatureDataByDeviceId(int deviceId);
         Task<List<TemperatureDataDto>> GetTemperatureDataBySensorId(int sensorId);
         Task<List<TemperatureDataDto>> GetAllTemperatureMeasurements();
+        Task<DeviceStatsDto> GetTemperatureStatsByDevice(int deviceId);
     }
 }
 
