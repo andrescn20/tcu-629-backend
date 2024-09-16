@@ -25,25 +25,25 @@ namespace API.Services
             {
                 if (sensorData == null)
                 {
-                    throw new ArgumentNullException(nameof(sensorData));
+                    throw new Exception("No se recibió información");
                 }
 
                 {
                     var sensor = await _sensorRepository.GetSensorByAddressAsync(sensorData.SensorAddress);
                     if (sensor == null)
                     {
-                        throw new Exception("Sensor not found");
+                        throw new Exception("Sensor no registrado");
                     }
 
-                    if (sensorData.Temperature < 0)
+                    if (sensorData.Temperature < -20)
                     {
-                        throw new Exception("Incorrect Reading");
+                        throw new Exception("Lectura de Temperatura incorrecta");
                     }
                     var temperatureSensorDto = new TemperatureData
                     {
                         SensorId = sensor.SensorId,
                         Temperature = sensorData.Temperature,
-                        Timestamp = sensorData.Timestamp,
+                        Timestamp = DateTime.SpecifyKind(sensorData.Timestamp, DateTimeKind.Utc),
                     };
 
                     var savedRecord = await _collectedDataRepository.SaveTemperatureSensorDataAsync(temperatureSensorDto);
@@ -60,9 +60,9 @@ namespace API.Services
 
                 }
             }
-            catch
+            catch (Exception)
             {
-                throw new Exception("Error saving Data");
+                throw;
             }
         }
 
