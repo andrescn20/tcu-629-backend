@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Environment.IsDevelopment()
     ? builder.Configuration.GetConnectionString("LocalConnection")
-    : builder.Configuration.GetConnectionString("AzureConnection");
+    : builder.Configuration.GetConnectionString("HostingConnection");
 
 // Configure EF Core
 builder.Services.AddDbContext<MonitoringDbContext>(options =>
@@ -127,7 +127,7 @@ using var scope = app.Services.CreateScope();
 if (app.Environment.IsDevelopment())
 {
     var context = scope.ServiceProvider.GetRequiredService<MonitoringDbContext>();
-    DbInitializer.SeedSensorData(context);
+    //DbInitializer.SeedSensorData(context);
 }
 
 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
