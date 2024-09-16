@@ -18,6 +18,7 @@ namespace API.Controllers
             _collectedDataService = collectedDataService;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Temperature(TemperatureDataDto sensorData)
         {
