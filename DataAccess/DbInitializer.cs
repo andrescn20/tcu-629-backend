@@ -22,7 +22,7 @@ public static class DbInitializer
         {
             var adminUser = new ApplicationUser
             {
-                UserName = "admin",
+                UserName = "administrador",
                 Email = "admin@example.com"
             };
 
@@ -33,14 +33,14 @@ public static class DbInitializer
             };
 
             // Create Admin User
-            var adminResult = await userManager.CreateAsync(adminUser, "Password123!");
+            var adminResult = await userManager.CreateAsync(adminUser, "TCUmonitoreo2024!");
             if (adminResult.Succeeded)
             {
                 await userManager.AddToRoleAsync(adminUser, "Admin");
             }
 
             // Create Normal User
-            var userResult = await userManager.CreateAsync(normalUser, "Password123!");
+            var userResult = await userManager.CreateAsync(normalUser, "TCUmonitoreo2024!");
             if (userResult.Succeeded)
             {
                 await userManager.AddToRoleAsync(normalUser, "User");
