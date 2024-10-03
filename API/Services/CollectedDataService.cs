@@ -43,7 +43,7 @@ namespace API.Services
                     {
                         SensorId = sensor.SensorId,
                         Temperature = sensorData.Temperature,
-                        Timestamp = DateTime.SpecifyKind(sensorData.Timestamp, DateTimeKind.Utc),
+                        Timestamp = sensorData.Timestamp,
                     };
 
                     var savedRecord = await _collectedDataRepository.SaveTemperatureSensorDataAsync(temperatureSensorDto);
